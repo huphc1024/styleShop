@@ -1,0 +1,68 @@
+package dao;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import entities.Orders;
+import entities.OrdersDetail;
+import entities.OrdersIndex;
+
+@Repository
+public class OrderDetailDao {
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
+
+	public List<OrdersDetail> getItems() {
+		return jdbcTemplate.query(
+				"SELECT p.name, p.picture, o.gia, o.soluong, o.giaohang, c.username, c.ho,"
+				+ " c.ten, c.andress, c.email, c.telephone, c.city, c.postcode, c.country FROM ordersdetail as o "
+				+ "inner join customer as c on c.id_customer = o.id_orders inner join product as p on p.id_product = o.id_product",
+				new BeanPropertyRowMapper<OrdersDetail>(OrdersDetail.class));
+	}
+
+	 public List<Orders> getItemsOrders() {
+	 return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten, c.andress, c.email,"
+	 		+ " c.telephone, c.city, c.postcode, c.country, o.gia, o.name, o.soluong, o.giaohang FROM orders as od "
+	 		+ "JOIN ordersdetail as o on o.id_orders = od.id_customer JOIN customer as c on c.id_customer = od.id_customer"
+	 , new BeanPropertyRowMapper<Orders>(Orders.class));
+	 }
+
+	public int addItem(OrdersDetail objCat) {
+		return jdbcTemplate.update(
+				"insert into ordersdetail(id_orders, id_product, name, gia, soluong, giaohang) values(?,?,?,?,?,?)",
+				new Object[] { objCat.getId_orders(), objCat.getId_product(), objCat.getName(), objCat.getGia(),
+						objCat.getSoluong(), objCat.getGiaohang() });
+	}
+
+	 public int delItem(int id) {
+	 return jdbcTemplate.update("delete from orders where id_orders = ?",
+	 new Object[] { id });
+	 }
+
+	public int addItemOrder(int id_customer) {
+		return jdbcTemplate.update(
+				"insert into orders(id_customer) values(?)",
+				new Object[] {id_customer });
+		
+	}
+
+	public List<OrdersIndex> getItemsOrdersIndex() {
+		return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten"
+		 		+ " FROM orders as od "
+		 		+ " JOIN customer as c on c.id_customer = od.id_customer"
+		 , new BeanPropertyRowMapper<OrdersIndex>(OrdersIndex.class));
+	}
+
+	public List<Orders> getItemOrder(int id) {
+		 return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten, c.andress, c.email,"
+			 		+ " c.telephone, c.city, c.postcode, c.country, o.gia, o.name, o.soluong, o.giaohang, o.id_product FROM orders as od "
+			 		+ "JOIN ordersdetail as o on o.id_orders = od.id_customer JOIN customer as c on c.id_customer = od.id_customer where od.id_orders = ?"
+			 		, new Object[]{id},
+			 new BeanPropertyRowMapper<Orders>(Orders.class));
+	}
+
+}
