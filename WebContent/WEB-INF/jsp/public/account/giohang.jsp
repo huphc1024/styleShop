@@ -7,8 +7,9 @@
 			<p>Giỏ hàng của bạn trống!</p>
 			<div class="buttons clearfix">
 				<div class="pull-right">
-					<a href="${pageContext.request.contextPath}/"><button type="button" data-toggle="tooltip" class="btn btn-danger"
-						onclick="">Tiếp tục</button></a>
+					<a href="${pageContext.request.contextPath}/"><button
+							type="button" data-toggle="tooltip" class="btn btn-danger"
+							onclick="">Tiếp tục</button></a>
 				</div>
 			</div>
 		</c:when>
@@ -34,8 +35,8 @@
 										<td class="text-left"><a
 											href="${pageContext.request.contextPath }/${slugUtils.toSlug(cart.name)}-${cart.id_product}.html">${cart.name }</a></td>
 
-										<td class="text-right cart-number"><input type="text"
-											value="${cart.num }" name="num" /></td>
+										<td class="text-right cart-number"><input type="number"
+											value="${cart.num }" name="num" min="1" /></td>
 										<c:choose>
 											<c:when test="${cart.gia_sale  == 0}">
 												<td class="text-right"><fmt:formatNumber type="number"
@@ -57,6 +58,30 @@
 													đ</td>
 											</c:otherwise>
 										</c:choose>
+										<td class="text-center"><button type="button"
+												onclick="return cartremove${cart.id_product}();"
+												title="Gỡ bở" class="btn btn-primary btn-xs">
+												<i class="fa fa-times"></i>
+											</button> 
+											<!-- <script type="text/javascript">
+		
+			function cartremove${cart.id_product}() {
+			$
+			.ajax({
+			url : '${pageContext.request.contextPath}/cartremove?pid=${cart.id_product}',
+			type : 'POST',
+			cache : false,
+			data : {
+			},
+			success : function(data) {
+				$('#cart').html(data);
+			,
+			error : function() {
+			alert('có lỗi xảy ra');
+			}
+			});
+		}
+	</script> --></td>
 									</tr>
 									<c:choose>
 										<c:when test="${cart.gia_sale  == 0}">
@@ -85,6 +110,10 @@
 				<div class="pull-right">
 					<button type="button" data-toggle="tooltip" class="btn btn-danger"
 						onclick="$('#form-banner').submit()">Tiếp tục</button>
+					<button type="button" data-toggle="tooltip" class="btn btn-danger">
+						<a href="${pageContext.request.contextPath }/thanh-toan"><i
+							class="fa fa-share"></i>Thanh Toán</a>
+					</button>
 				</div>
 			</div>
 		</c:otherwise>

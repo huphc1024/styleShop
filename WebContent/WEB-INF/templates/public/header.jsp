@@ -167,9 +167,10 @@
 											href="${pageContext.request.contextPath }/tai-khoan/lich-su-dat-hang">Lịch
 												sử đơn hàng</a></li>
 										<c:if test="${objCus.username != null}">
-										<li><a href="${pageContext.request.contextPath }/dang-xuat">Đăng
-											xuất</a>
-										</li></c:if>
+											<li><a
+												href="${pageContext.request.contextPath }/dang-xuat">Đăng
+													xuất</a></li>
+										</c:if>
 									</ul>
 								</div>
 							</div>
@@ -247,7 +248,8 @@
 											<c:set value="${tong + (cart.num * cart.gia)}" var="tong"></c:set>
 										</c:if>
 										<c:if test="${cart.gia_sale != 0 }">
-											<c:set value="${tong + (cart.num * cart.gia_sale)}" var="tong"></c:set>
+											<c:set value="${tong + (cart.num * cart.gia_sale)}"
+												var="tong"></c:set>
 										</c:if>
 										<c:set value="${i+1}" var="i"></c:set>
 									</c:forEach>
@@ -255,8 +257,7 @@
 								</div>
 							</div>
 							<c:choose>
-								<c:when
-									test="${listCart == null }">
+								<c:when test="${listCart == null }">
 									<ul class="dropdown-menu pull-right">
 										<li>
 											<p class="text-center">Giỏ hàng của bạn trống!</p>
@@ -267,35 +268,38 @@
 									<ul class="dropdown-menu pull-right">
 										<c:forEach items="${listCart }" var="cart">
 											<li>
-											<table style='width: 500px;' class="table table-striped">
-												<tbody>
-													<tr>
-														<td style='width: 230px; height: 47px;' class="text-center"><a
-															href="${pageContext.request.contextPath }/${slugUtils.toSlug(cart.name)}-${cart.id_product}.html"><img
-																width='47px' height='47px'
-																src="${pageContext.request.contextPath }/${cart.picture}"
-																alt="Áo khoác The North Face"
-																title="Áo khoác The North Face"></a></td>
+												<table style='width: 500px;' class="table table-striped">
+													<tbody>
+														<tr>
+															<td style='width: 230px; height: 47px;'
+																class="text-center"><a
+																href="${pageContext.request.contextPath }/${slugUtils.toSlug(cart.name)}-${cart.id_product}.html"><img
+																	width='47px' height='47px'
+																	src="${pageContext.request.contextPath }/${cart.picture}"
+																	alt="Áo khoác The North Face"
+																	title="Áo khoác The North Face"></a></td>
 
-														<td class="text-left"><a
-															href="${pageContext.request.contextPath }/${slugUtils.toSlug(cart.name)}-${cart.id_product}.html">${cart.name }</a></td>
+															<td class="text-left"><a
+																href="${pageContext.request.contextPath }/${slugUtils.toSlug(cart.name)}-${cart.id_product}.html">${cart.name }</a></td>
 
-														<td class="text-right cart-number">x ${cart.num }</td>
-														<c:choose>
-															<c:when test="${cart.gia_sale  == 0}">
-																<td class="text-right">${cart.gia }</td>
-															</c:when>
-															<c:otherwise><td class="text-right">${cart.gia_sale }</td></c:otherwise>
-														</c:choose>
-														<td class="text-center"><button type="button"
-																onclick="return cartremove${cart.id_product}();" title="Gỡ bở"
-																class="btn btn-primary btn-xs">
-																<i class="fa fa-times"></i>
-															</button></td>
-													</tr>
-												</tbody>
-											</table>
-										</li>
+															<td class="text-right cart-number">x ${cart.num }</td>
+															<c:choose>
+																<c:when test="${cart.gia_sale  == 0}">
+																	<td class="text-right">${cart.gia }</td>
+																</c:when>
+																<c:otherwise>
+																	<td class="text-right">${cart.gia_sale }</td>
+																</c:otherwise>
+															</c:choose>
+															<td class="text-center"><button type="button"
+																	onclick="return cartremove${cart.id_product}();"
+																	title="Gỡ bở" class="btn btn-primary btn-xs">
+																	<i class="fa fa-times"></i>
+																</button></td>
+														</tr>
+													</tbody>
+												</table>
+											</li>
 										</c:forEach>
 										<li>
 											<div>
@@ -303,7 +307,7 @@
 													<tbody>
 														<tr>
 															<td class="text-right"><strong>Thành tiền</strong></td>
-															<td class="text-right">${tong } đ</td>
+															<td class="text-right">${tong }đ</td>
 														</tr>
 													</tbody>
 												</table>
@@ -330,7 +334,7 @@
 		</div>
 	</header>
 	<div class="sidebar-offcanvas visible-xs visible-sm">
- 	<div class="offcanvas-inner panel-offcanvas">
+		<div class="offcanvas-inner panel-offcanvas">
 			<div class="offcanvas-heading panel-heading">
 				<button data-toggle="offcanvas"
 					class="btn btn-primary offcanvas-exit" type="button">
@@ -453,4 +457,5 @@
 			$(".sidebar-offcanvas").css('left', '-100%');
 		});
 	</script>
+	
 	<div class="container"></div>

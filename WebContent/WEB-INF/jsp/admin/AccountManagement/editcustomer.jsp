@@ -96,7 +96,7 @@
 												</c:if>
 											</div>
 										</div>
-										<div class="form-group required">
+										<%-- <div class="form-group required">
 											<label class="col-sm-2 control-label" for="input-password">Mật
 												khẩu</label>
 											<div class="col-sm-10">
@@ -121,7 +121,7 @@
 													<p style="color: red; font-style: italic;">${msgRepass }</p>
 												</c:if>
 											</div>
-										</div>
+										</div> --%>
 										<div class="form-group">
 											<label class="col-sm-2 control-label" for="input-newsletter">Đăng
 												ký nhận thư</label>

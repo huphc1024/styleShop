@@ -9,7 +9,8 @@
 
 					<div class="fotorama" data-nav="thumbs"
 						data-allowfullscreen="native">
-						<a href="${pageContext.request.contextPath }/files/${objProduct.picture }"><img
+						<a
+							href="${pageContext.request.contextPath }/files/${objProduct.picture }"><img
 							width="414px" height="542px"
 							src="${pageContext.request.contextPath }/files/${objProduct.picture }"
 							alt="${objProduct.name }" /></a> <a
@@ -83,6 +84,7 @@
 								type="hidden" name="product_id" value="53" /> <br />
 							<button type="button" id="button-cart"
 								data-loading-text="Đang tải..."
+								onclick="return cart${objProduct.id_product}()" 
 								class="btn btn-primary btn-lg btn-block">Thêm vào giỏ</button>
 						</div>
 					</div>
@@ -95,8 +97,7 @@
 				<ul class="nav clearfix">
 					<li class="active first"><a href="#tab-description"
 						data-toggle="tab">Mô tả</a></li>
-					<li><a href="#tab-review" data-toggle="tab">Đánh giá
-							</a></li>
+					<li><a href="#tab-review" data-toggle="tab">Đánh giá </a></li>
 				</ul>
 			</div>
 			<div class="tab-content">
@@ -119,26 +120,26 @@
 					<form class="form-horizontal" id="form-review" name="form">
 						<div id="ajax">
 							<div id="review">
-							<c:forEach items="${listComment }" var="objC">
-								<div class="row">
-									<div class="col-sm-1">
-										<div class="thumbnail">
-											<img class="img-responsive user-photo hidden-xs"
-												src="${define.URL_PUBLIC }/image/avatar_2x.png">
-										</div>
-									</div>
-									<div class="col-sm-11">
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<strong>Tên: ${objC.ho_ten }</strong> - <span class="text-muted">
-												<fmt:formatDate value="${objC.date_create }" var="fmtDate" pattern="dd/MM/yyyy"/>${fmtDate }</span>
-											</div>
-											<div class="panel-body">
-												${objC.noi_dung }
+								<c:forEach items="${listComment }" var="objC">
+									<div class="row">
+										<div class="col-sm-1">
+											<div class="thumbnail">
+												<img class="img-responsive user-photo hidden-xs"
+													src="${define.URL_PUBLIC }/image/avatar_2x.png">
 											</div>
 										</div>
+										<div class="col-sm-11">
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													<strong>Tên: ${objC.ho_ten }</strong> - <span
+														class="text-muted"> <fmt:formatDate
+															value="${objC.date_create }" var="fmtDate"
+															pattern="dd/MM/yyyy" />${fmtDate }</span>
+												</div>
+												<div class="panel-body">${objC.noi_dung }</div>
+											</div>
+										</div>
 									</div>
-								</div>
 								</c:forEach>
 							</div>
 							<h2>Viết đánh giá</h2>
@@ -171,6 +172,56 @@
 									giá</button>
 							</div>
 						</div>
+						<script type="text/javascript">
+																				function cart${objProduct.id_product}() {
+																					$
+																							.ajax({
+																								url : '${pageContext.request.contextPath}/giohang?pid=${objProduct.id_product}',
+																								type : 'POST',
+																								cache : false,
+																								data : {
+																								},
+																								success : function(data) {
+																									$('#cart').html(data);
+																									$('#sys-notification').html(
+																											"<div class='container'>"
+																											+"<div id='notification'>"
+																											+"<div class='alert alert-success' style='margin-top: 15px;'>"
+																											+"<i class='fa fa-check-circle'></i>"
+																											+"Thành công: Bạn đã thêm <a "
+																											+"href='${pageContext.request.contextPath}/+${slugUtils.toSlug(objProduct.name)}-${objProduct.id_product}.html'>${objProduct.name}</a> vào <a href='${pageContext.request.contextPath}/gio-hang'>giỏ hàng</a>!"
+																													+"<button type='button' class='close' data-dismiss='alert'>×</button>"
+																													+"</div>"
+																													+"</div>"
+																													+"</div>"
+																									);
+																								},
+																								error : function() {
+																									alert('có lỗi xảy ra');
+																								}
+																							});
+																					jQuery('.addcart').click(function () {
+																			            jQuery("html, body").animate({scrollTop: 0}, 300);
+																			            return false;
+																			        });
+																				}
+																				function cartremove${objProduct.id_product}() {
+																					$
+																							.ajax({
+																								url : '${pageContext.request.contextPath}/cartremove?pid=${objProduct.id_product}',
+																								type : 'POST',
+																								cache : false,
+																								data : {
+																								},
+																								success : function(data) {
+																									$('#cart').html(data);
+																								},
+																								error : function() {
+																									alert('có lỗi xảy ra');
+																								}
+																							});
+																				}
+																				</script>
 						<script type="text/javascript">
 							function getCheckedValue(radioObj) {
 								if (!radioObj)

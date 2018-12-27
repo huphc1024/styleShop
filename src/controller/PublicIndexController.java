@@ -272,9 +272,10 @@ public class PublicIndexController {
 		if (session.getAttribute("objCustomer") == null) {
 			return "public.index.login";
 		} else {
-
+			
 			Customer objCustomer = (Customer) session.getAttribute("objCustomer");
 			modelMap.addAttribute("objCus", objCustomer);
+			modelMap.addAttribute("listOrdersDetails", orderDetailDao.getItemsOrdersByIdCus(objCustomer.getId_customer()));
 			return "public.index.lichsudathang";
 		}
 
@@ -309,6 +310,9 @@ public class PublicIndexController {
 			};
 			int sp = 0;
 			float tong = 0;
+			orderDetailDao.addItemOrder(cid);
+			int id_orders = orderDetailDao.getItemOrderTopbyidcus(cid).getId_orders();
+			System.out.println("id_orders " + id_orders);
 			for (Product product1 : listCart) {
 				float gia = 0;
 				if(product1.getGia_sale() == 0){
@@ -318,7 +322,7 @@ public class PublicIndexController {
 				}
 				sp++;
 				tong += (gia*product1.getNum());
-				OrdersDetail objO = new OrdersDetail(cid, product1.getId_product(), product1.getName(), gia, product1.getNum(),giaohang );
+				OrdersDetail objO = new OrdersDetail(id_orders, product1.getId_product(), product1.getName(), gia, product1.getNum(),giaohang );
 				try {
 					orderDetailDao.addItem(objO);
 					System.out.println("đấy ỏ");
@@ -326,7 +330,7 @@ public class PublicIndexController {
 					return "redirect:/thanh-toan/step2";
 				}
 			}
-			orderDetailDao.addItemOrder(cid);
+			
 			listCart.removeAll(listCart);
 			return "redirect:/thanh-toan/thanh-cong";
 		}else{
@@ -341,6 +345,9 @@ public class PublicIndexController {
 			};
 			int sp = 0;
 			float tong = 0;
+			orderDetailDao.addItemOrder(cid);
+			int id_orders = orderDetailDao.getItemOrderTopbyidcus(cid).getId_orders();
+			System.out.println("id_orders " + id_orders);
 			for (Product product1 : listCart) {
 				float gia = 0;
 				if(product1.getGia_sale() == 0){
@@ -350,14 +357,13 @@ public class PublicIndexController {
 				}
 				sp++;
 				tong += (gia*product1.getNum());
-				OrdersDetail objO = new OrdersDetail(objCustomer.getId_customer(), product1.getId_product(), product1.getName(), gia, product1.getNum(),giaohang );
+				OrdersDetail objO = new OrdersDetail(id_orders, product1.getId_product(), product1.getName(), gia, product1.getNum(),giaohang );
 				try {
 					orderDetailDao.addItem(objO);
 				} catch (Exception e) {
 					return "redirect:/thanh-toan/step2";
 				}
 			}
-			orderDetailDao.addItemOrder(objCustomer.getId_customer());
 			listCart.removeAll(listCart);
 			return "redirect:/thanh-toan/thanh-cong";
 		}

@@ -85,7 +85,7 @@
 								<span class="product-label-special product-label"><span
 									class="special">Sale</span></span>
 							</c:if>
-							<a class="img" href="canon-eos-5d.html"><img
+							<a class="img" href="${pageContext.request.contextPath }/${slugUtils.toSlug(objProduct.name)}-${objProduct.id_product}.html"><img
 								width="270px" height="357px"
 								src="${pageContext.request.contextPath }/files/${objProduct.picture}"
 								alt="${objProduct.name }" class="img-responsive" /></a>
@@ -100,7 +100,7 @@
 						<div class="product-meta">
 							<div class="left">
 								<h3 class="name">
-									<a href="canon-eos-5d.html">${objProduct.name }</a>
+									<a href="${pageContext.request.contextPath }/${slugUtils.toSlug(objProduct.name)}-${objProduct.id_product}.html">${objProduct.name }</a>
 								</h3>
 								<c:choose>
 									<c:when test="${objProduct.gia_sale != 0 }">

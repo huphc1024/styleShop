@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import entities.Orders;
 import entities.OrdersDetail;
 import entities.OrdersIndex;
+import entities.Product;
 
 @Repository
 public class OrderDetailDao {
@@ -20,14 +21,14 @@ public class OrderDetailDao {
 		return jdbcTemplate.query(
 				"SELECT p.name, p.picture, o.gia, o.soluong, o.giaohang, c.username, c.ho,"
 				+ " c.ten, c.andress, c.email, c.telephone, c.city, c.postcode, c.country FROM ordersdetail as o "
-				+ "inner join customer as c on c.id_customer = o.id_orders inner join product as p on p.id_product = o.id_product",
+				+ "inner join customer as c on c.id_customer = o.id_customer inner join product as p on p.id_product = o.id_product",
 				new BeanPropertyRowMapper<OrdersDetail>(OrdersDetail.class));
 	}
 
 	 public List<Orders> getItemsOrders() {
 	 return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten, c.andress, c.email,"
 	 		+ " c.telephone, c.city, c.postcode, c.country, o.gia, o.name, o.soluong, o.giaohang FROM orders as od "
-	 		+ "JOIN ordersdetail as o on o.id_orders = od.id_customer JOIN customer as c on c.id_customer = od.id_customer"
+	 		+ "JOIN ordersdetail as o on o.id_customer = od.id_customer JOIN customer as c on c.id_customer = od.id_customer"
 	 , new BeanPropertyRowMapper<Orders>(Orders.class));
 	 }
 
@@ -49,6 +50,15 @@ public class OrderDetailDao {
 				new Object[] {id_customer });
 		
 	}
+	
+	public Orders getItemOrderTopbyidcus(int id_customer) {
+		return jdbcTemplate.queryForObject(
+				"SELECT * FROM orders where id_customer = ? order by id_orders DESC limit 1",
+				new Object[] {id_customer }, new BeanPropertyRowMapper<Orders>(Orders.class));
+		
+	}
+	
+	
 
 	public List<OrdersIndex> getItemsOrdersIndex() {
 		return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten"
@@ -56,11 +66,17 @@ public class OrderDetailDao {
 		 		+ " JOIN customer as c on c.id_customer = od.id_customer"
 		 , new BeanPropertyRowMapper<OrdersIndex>(OrdersIndex.class));
 	}
+	public List<OrdersIndex> getItemsOrdersByIdCus(int id_customer) {
+		return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten"
+		 		+ " FROM orders as od "
+		 		+ " JOIN customer as c on c.id_customer = od.id_customer where c.id_customer = ?"
+		 , new Object[] {id_customer }, new BeanPropertyRowMapper<OrdersIndex>(OrdersIndex.class));
+	}
 
 	public List<Orders> getItemOrder(int id) {
 		 return jdbcTemplate.query("SELECT od.id_orders, od.id_customer, od.date_create, c.ho, c.ten, c.andress, c.email,"
 			 		+ " c.telephone, c.city, c.postcode, c.country, o.gia, o.name, o.soluong, o.giaohang, o.id_product FROM orders as od "
-			 		+ "JOIN ordersdetail as o on o.id_orders = od.id_customer JOIN customer as c on c.id_customer = od.id_customer where od.id_orders = ?"
+			 		+ "JOIN ordersdetail as o on o.id_orders = od.id_orders JOIN customer as c on c.id_customer = od.id_customer where od.id_orders = ?"
 			 		, new Object[]{id},
 			 new BeanPropertyRowMapper<Orders>(Orders.class));
 	}

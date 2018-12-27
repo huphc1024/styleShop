@@ -183,22 +183,11 @@ public class AdminAccController {
 		return "admin.acc.customer.add";
 	}
 	@RequestMapping(value="/customer/edit/{id}", method=RequestMethod.POST)
-	public String editcustomer(@Valid @ModelAttribute("objItem") CustomerEdit objItem, BindingResult rs,@PathVariable("id") int id,@RequestParam("re_password") String repass,ModelMap modelMap, RedirectAttributes ra){
+	public String editcustomer(@Valid @ModelAttribute("objItem") CustomerEdit objItem, BindingResult rs,@PathVariable("id") int id,ModelMap modelMap, RedirectAttributes ra){
 		if(rs.hasErrors()){
 			modelMap.addAttribute("objCus", objItem);
 			return "admin.acc.customer.edit";
 		}
-		if(!repass.equals(objItem.getPassword()) || (objItem.getPassword().length() < 6 && objItem.getPassword().length() > 0)){
-			modelMap.addAttribute("objCus", objItem);
-			modelMap.addAttribute("msgRepass", "Mật khẩu phải trùng nhau");
-			modelMap.addAttribute("msgPass", "Mật khẩu phải lớn hơn 6 ký tự");
-			return "admin.acc.customer.edit";
-		}
-			if(!objItem.getPassword().isEmpty()){
-				objItem.setPassword(stringUtils.md5(objItem.getPassword()));
-			}else{
-				objItem.setPassword(userDao.getItem(id).getPassword());
-			}
 			objItem.setId_customer(id);
 			if(customerDao.editItem(objItem) > 0){
 				ra.addFlashAttribute("msg", "Sửa thành công");
@@ -255,6 +244,7 @@ public class AdminAccController {
 			return "redirect:/admincp/account/customer/add";
 		}
 		else{
+			objItem.setActive(1);
 			objItem.setPassword(stringUtils.md5(objItem.getPassword()));
 			if(customerDao.addItem(objItem) > 0){
 				ra.addFlashAttribute("msg", "Thêm thành công");

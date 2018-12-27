@@ -39,8 +39,8 @@ public class CustomerDao {
 
 	public int editItem(CustomerEdit objItem) {
 		return jdbcTemplate.update(
-				"update customer set password = ?, ho = ?, ten = ?, andress = ?, email = ?, telephone = ?, newsletter = ?, active = 1, city = ?, postcode = ?, country = ? where id_customer = ?",
-				new Object[] { objItem.getPassword(), objItem.getHo(), objItem.getTen(), objItem.getAndress(),
+				"update customer set  ho = ?, ten = ?, andress = ?, email = ?, telephone = ?, newsletter = ?, active = 1, city = ?, postcode = ?, country = ? where id_customer = ?",
+				new Object[] { objItem.getHo(), objItem.getTen(), objItem.getAndress(),
 						objItem.getEmail(), objItem.getTelephone(), objItem.getNewsletter(), 
 						objItem.getCity(), objItem.getPostcode(), objItem.getCountry(), objItem.getId_customer() });
 	}
